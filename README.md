@@ -1,3 +1,3 @@
-# Algorithm
+# Algorithms
 My algorithms' practice
 ---
