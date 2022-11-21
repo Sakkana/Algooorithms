@@ -122,7 +122,7 @@ public:
 ```
 
 
-### <a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/">26. 删除有序数组中的重复项</a>
+### <a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/">26.删除有序数组中的重复项</a>
 
 自己第一次是这么做的，但是时空复杂度有点高。\
 没有看到有序数组这个条件，其实可以不用哈希表的。\
