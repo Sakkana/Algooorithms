@@ -6,7 +6,7 @@
 
 ## 基础算法
 
-###c<a href="https://leetcode.cn/problems/binary-search/description/">704.二分查找</a>
+### <a href="https://leetcode.cn/problems/binary-search/description/">704.二分查找</a>
 
 yxc 做法 \
 可以维护区间序列，查找头尾。 \
