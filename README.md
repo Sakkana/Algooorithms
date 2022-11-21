@@ -147,7 +147,83 @@ public:
 };
 ```
 后来又重新写了一遍。
+虽然过了，但是说实话挺丑陋的。
 ```c++
-
+class Solution {
+    map<int, bool> mp;
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int l = 0, r = 0;
+        int len = nums.size();
+        while (r < len) {
+            while (r < len && nums[l] == nums[r]) {
+                ++ r;
+            }
+            if (l < len) {
+                ++ l;
+            }
+            if (r < len) {
+                nums[l] = nums[r];
+            }
+        }
+        return l;
+    }
+};
 ```
+官解这个确实挺优雅的。
+```c++
+class Solution {
+    map<int, bool> mp;
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int l = 0, r = l + 1;
+        int len = nums.size();
+        while (r < len) {
+            if (nums[l] != nums[r]) {
+                if (r - l > 1) {
+                    nums[l + 1] = nums[r];
+                }
+                ++ l;
+            }
+            ++ r;
+        }
+        return l + 1;
+    }
+};
+```
+
+### </a href="https://leetcode.cn/problems/squares-of-a-sorted-array/>977. 有序数组的平方</a>
+连 easy 题都要看题解了...
+任重而道远啊。
+```c++
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int l = 0, r = nums.size() - 1;
+        vector<int> res;
+        while (l <= r) {
+            int l_pow = nums[l] * nums[l];
+            int r_pow = nums[r] * nums[r];
+            if a(l_pow > r_pow) {
+                res.push_back(l_pow);
+                ++ l;
+            } else {
+                res.push_back(r_pow);
+                -- r;
+            }
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+```
+
+
+
+
+
+
+
+
+
 
