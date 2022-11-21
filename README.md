@@ -1,3 +1,4 @@
 # Algorithms
-My algorithms' practice
+
+加油刷题！
 ---
