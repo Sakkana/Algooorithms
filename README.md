@@ -4,6 +4,7 @@
 
 ---
 
+## 基础算法
 <a href="https://leetcode.cn/problems/binary-search/description/">704.二分查找</a>
 
 yxc 做法 \
@@ -75,5 +76,74 @@ public:
         }
         return -1;
 };
+```
+
+
+## 双指针
+
+<a href="https://leetcode.cn/problems/remove-element/description/">27. 移除元素</a>
+```c++
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int p1 = 0, p2 = 0;
+        int len = nums.size();
+        while (p2 < len) {
+            if (nums[p2] != val) {
+                nums[p1] = nums[p2];
+                ++ p1;
+            }
+            ++ p2;
+        }
+        return p1;
+    }
+};
+```
+
+由于不要求顺序，题解提供了这种优化时间的做法。
+```c++
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int p1 = 0, p2 = nums.size();
+        while (p1 != p2) {
+            if (nums[p1] == val) {
+                nums[p1] = nums[p2 - 1];
+                -- p2;
+            } else {
+                ++ p1;
+            }
+        }
+        return p1;
+    }
+};
+
+
+<a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/">26. 删除有序数组中的重复项</a>
+自己第一次是这么做的，但是时空复杂度有点高。\
+没有看到有序数组这个条件，其实可以不用哈希表的。
+因为有序数组的话，相同元素一定是连着的。
+```c++
+class Solution {
+    map<int, bool> mp;
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int l = 0, r = 0;
+        int len = nums.size();
+        while (r < len) {
+            if (!mp[nums[r]]) {
+                mp[nums[r]] = true;
+                nums[l] = nums[r];
+                ++ l;
+            }
+            ++ r;
+        }
+        return l;
+    }
+};
+```
+后来又重新写了一遍。
+```c++
+
 ```
 
