@@ -328,7 +328,45 @@ public:
 };
 ```
 
+### <a href="https://leetcode.cn/problems/minimum-window-substring/description/">76. 最小覆盖子串</a>
 
+```c++
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> mp_s, mp_t;
+        auto check = [&]() {
+            for (const auto it : mp_t) {
+                if (mp_s[it.first] < it.second) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        for (const auto it : t) {
+            ++ mp_t[it];
+        }
+
+        int min_len = 0x3f3f3f3f, st = -1;
+        int len = s.size();
+        int l = 0, r = -1;
+        while (r < len) {
+            ++ mp_s[s[++ r]];
+            while (l <= r && check()) {
+                if (r - l + 1 < min_len) {
+                    min_len = r - l + 1;
+                    st = l;
+                }
+                -- mp_s[s[l ++]];
+            }
+            cout << l << " " << r  << endl;
+        }
+        return st == -1 ? string{} : s.substr(st, min_len);
+    }
+};
+```
 
 
 
