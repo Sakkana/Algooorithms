@@ -221,7 +221,7 @@ public:
 ## 滑动窗口
 其实滑动窗口也有双指针的特性，因为有个窗口前沿和窗口后沿。
 
-###c<a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209.长度最小的子数组</a>
+### <a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209.长度最小的子数组</a>
 
 其实这道题大二的时候做过，但是在餐馆里等烧烤，喝了点啤酒。\
 当时刚转到cs一切都很陌生。\
