@@ -218,25 +218,26 @@ public:
 };
 ```
 
-### 滑动窗口
+## 滑动窗口
 其实滑动窗口也有双指针的特性，因为有个窗口前沿和窗口后沿。
 
-<a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209.长度最小的子数组</a>
-其实这道题大二的时候做过，但是在餐馆里等烧烤，喝了点啤酒。
-当时刚转到cs一切都很陌生。
+###c<a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209.长度最小的子数组</a>
+
+其实这道题大二的时候做过，但是在餐馆里等烧烤，喝了点啤酒。\
+当时刚转到cs一切都很陌生。\
 没想到一年过去了，忘得也差不多了。
 
 这里的条件有三个：
 1. 长度最小
 2. 连续
-3. sum >= target
+3. sum >= targe
 
-因此，可以将窗口定义为满足上述条件的连续子序列。
-最核心的是如何更新窗口。
-首先，右沿要一直向右移动，直到出现一个满足条件的窗口。
-此时，左沿要向左移动，将窗口长度尽量缩短并且满足 sum >= target。
-一旦找到了最小的那个左沿（即再移动 sum < target），停止左沿移动。
-那么，当前就找到了一个局部的最优解，与全局最优解作比较。
+因此，可以将窗口定义为满足上述条件的连续子序列。\
+最核心的是如何更新窗口。\
+首先，右沿要一直向右移动，直到出现一个满足条件的窗口。\
+此时，左沿要向左移动，将窗口长度尽量缩短并且满足 sum >= target。\
+一旦找到了最小的那个左沿（即再移动 sum < target），停止左沿移动。\
+那么，当前就找到了一个局部的最优解，与全局最优解作比较。\
 下一次，再次移动右沿，直到满足上述三个条件，周而复始。
 
 ```c++
@@ -258,13 +259,45 @@ public:
 };
 ```
 
-这个用二分也可以做。
+这个用**二分**也可以做。\
+既然是连续子序列的和，那么使用前缀和可以到达 O(1) 计算。\
+我们要的是区间 sum([l, r]) >= target，那么就是针对 l 找到一个下标 x，满足前缀和 s[x] >= s[l - 1] + target。\
+此时可以使用二分查找来锁定这个 x，因为前缀和是单调上升的。
+
+```c++
+class Solution {
+    const int N = 1e5 + 10;
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        if (nums.size() == 1) {
+            return nums[0] >= target ? 1 : 0;
+        }
+
+        int len = nums.size();
+        vector<int> s(len + 1, 0);
+        for (int i = 1; i <= len; ++ i) {
+            s[i] = s[i - 1] + nums[i - 1];
+        }
+
+        int res = 0x3f3f3f3f;
+        for (int i = 1; i <= len; ++ i) {
+            int sum = s[i - 1] + target;
+            auto end = lower_bound(s.begin(), s.end(), sum);
+            if (end != s.end())
+                res = min(res, static_cast<int>(end - s.begin()) - (i - 1));
+        }
+        return res == 0x3f3f3f3f ? 0 : res;
+    }
+};
+```
 
 
-<a href="https://leetcode.cn/problems/fruit-into-baskets/description/">904. 水果成篮</a>
-首先抓住条件：`一旦你走到某棵树前，但水果不符合篮子的水果类型，那么就必须停止采摘。`
-这意味着，这里隐含了一个窗口，该窗口内部至多有两种元素。
+### <a href="https://leetcode.cn/problems/fruit-into-baskets/description/">904. 水果成篮</a>
+
+首先抓住条件：`一旦你走到某棵树前，但水果不符合篮子的水果类型，那么就必须停止采摘。`\
+这意味着，这里隐含了一个窗口，该窗口内部至多有两种元素。\
 因此窗口维护的是：最长的且由1个或2个重复元素组成的最长序列。
+
 ```c++
 class Solution {
 public:
