@@ -218,7 +218,82 @@ public:
 };
 ```
 
+### 滑动窗口
+其实滑动窗口也有双指针的特性，因为有个窗口前沿和窗口后沿。
 
+<a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209.长度最小的子数组</a>
+其实这道题大二的时候做过，但是在餐馆里等烧烤，喝了点啤酒。
+当时刚转到cs一切都很陌生。
+没想到一年过去了，忘得也差不多了。
+
+这里的条件有三个：
+1. 长度最小
+2. 连续
+3. sum >= target
+
+因此，可以将窗口定义为满足上述条件的连续子序列。
+最核心的是如何更新窗口。
+首先，右沿要一直向右移动，直到出现一个满足条件的窗口。
+此时，左沿要向左移动，将窗口长度尽量缩短并且满足 sum >= target。
+一旦找到了最小的那个左沿（即再移动 sum < target），停止左沿移动。
+那么，当前就找到了一个局部的最优解，与全局最优解作比较。
+下一次，再次移动右沿，直到满足上述三个条件，周而复始。
+
+```c++
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int res = 0x3f3f3f3f;
+        int sum = 0;
+        for (int l = 0, r = 0; r < n; ++ r) {
+            sum += nums[r];
+            while (sum >= target) {
+                res = min(res, r - l + 1);
+                sum -= nums[l ++];
+            }
+        }
+        return res == 0x3f3f3f3f ? 0 : res;
+    }
+};
+```
+
+这个用二分也可以做。
+
+
+<a href="https://leetcode.cn/problems/fruit-into-baskets/description/">904. 水果成篮</a>
+首先抓住条件：`一旦你走到某棵树前，但水果不符合篮子的水果类型，那么就必须停止采摘。`
+这意味着，这里隐含了一个窗口，该窗口内部至多有两种元素。
+因此窗口维护的是：最长的且由1个或2个重复元素组成的最长序列。
+```c++
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        int len = fruits.size();
+        if (len == 1) {
+            return 1;
+        }
+
+        unordered_map<int, int> mp;
+        int l = 0, r = 0;
+        int res = 0;
+        while (r < len) {
+            ++ mp[fruits[r]];
+            while (mp.size() > 2) {
+                auto pos = mp.find(fruits[l]);
+                -- pos->second;
+                if (!pos->second) {
+                    mp.erase(pos);
+                }
+                ++ l;
+            }
+            res = max(res, r - l + 1);
+            ++ r;
+        }
+        return res;
+    }
+};
+```
 
 
 
